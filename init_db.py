@@ -1,6 +1,6 @@
 import asyncio
 from app.crud.base import BaseORM
-from app.api.tasks import post_task
+from app.api.task import post_task
 
 
 async def main():

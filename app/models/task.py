@@ -11,8 +11,8 @@ updated_at = Annotated[datetime.datetime, mapped_column(
         onupdate=datetime.datetime.utcnow,
     )]
 
-class Tasks(Base):
-    __tablename__ = "tasks"
+class Task(Base):
+    __tablename__ = "task"
     
     id: Mapped[intpk]
     title: Mapped[str]

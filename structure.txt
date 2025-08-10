@@ -9,7 +9,7 @@ todo/
 │   │   ├── __init__.py
 │   │   ├── v1/                   # Версия API (v1, v2 и т.д.)
 │   │   │   ├── __init__.py
-│   │   │   ├── tasks.py
+│   │   │   ├── task.py
 │   │   │   └── users.py (опционально)
 │   │   └── deps.py               # зависимости (Depends)
 │   │
@@ -22,7 +22,7 @@ todo/
 │   ├── crud/                     # Логика работы с БД (CRUD)
 │   │   ├── __init__.py
 │   │   ├── base.py
-│   │   └── tasks.py
+│   │   └── task.py
 │   │
 │   ├── models/                   # SQLAlchemy модели
 │   │   ├── __init__.py
@@ -33,7 +33,7 @@ todo/
 │   │   └── task.py
 │   │
 │   └── tests/                    # Тесты
-│       └── test_tasks.py
+│       └── test_task.py
 │
 ├── .env
 ├── docker-compose.yml
