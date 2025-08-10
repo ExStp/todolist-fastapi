@@ -1,0 +1,51 @@
+todo/
+│
+├── app/
+│   ├── __init__.py
+│   │
+│   ├── main.py                  # Точка входа (FastAPI app)
+│   │
+│   ├── api/                     # Роутеры (endpoints)
+│   │   ├── __init__.py
+│   │   ├── v1/                   # Версия API (v1, v2 и т.д.)
+│   │   │   ├── __init__.py
+│   │   │   ├── tasks.py
+│   │   │   └── users.py (опционально)
+│   │   └── deps.py               # зависимости (Depends)
+│   │
+│   ├── core/                     # Основная конфигурация
+│   │   ├── __init__.py
+│   │   ├── config.py              # Настройки проекта (BaseSettings)
+│   │   ├── db.py                  # Подключение к БД
+│   │   └── security.py (опционально)
+│   │
+│   ├── crud/                     # Логика работы с БД (CRUD)
+│   │   ├── __init__.py
+│   │   ├── base.py
+│   │   └── tasks.py
+│   │
+│   ├── models/                   # SQLAlchemy модели
+│   │   ├── __init__.py
+│   │   └── task.py
+│   │
+│   ├── schemas/                  # Pydantic-схемы
+│   │   ├── __init__.py
+│   │   └── task.py
+│   │
+│   └── tests/                    # Тесты
+│       └── test_tasks.py
+│
+├── .env
+├── docker-compose.yml
+├── Dockerfile
+├── poetry.lock
+├── pyproject.toml
+└── README.md
+
+•	api/ — только маршруты и зависимости для них.
+•	core/ — вся конфигурация, база данных, безопасность.
+•	crud/ — работа с БД (отдельно от моделей и роутеров).
+•	models/ — SQLAlchemy модели (таблицы).
+•	schemas/ — Pydantic-схемы (валидация входных/выходных данных).
+•	tests/ — автотесты.
+•	Версионирование API (v1/) упрощает будущие обновления.
