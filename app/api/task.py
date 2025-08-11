@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException
 from app.crud.task import TaskOrm
-from app.schemas.task import TaskPostSchema, TaskSchema
+from app.schemas.task import TaskPostSchema, TaskPutSchema, TaskSchema
 
 
 router = APIRouter(prefix="/tasks", tags=["tasks"])
@@ -22,3 +22,10 @@ async def delete_task(id: int) -> TaskSchema:
     if not deleted_task:
         raise HTTPException(status_code=404, detail="Задача не найдена")
     return deleted_task
+
+@router.put("/{id}", name="Обновить задачу по id")
+async def put_task(id: int, task: TaskPutSchema) -> TaskSchema:
+    updated_task = await TaskOrm.put_task(id, task)
+    if not updated_task:
+        raise HTTPException(status_code=404, detail="Задача не найдена")
+    return updated_task

@@ -8,9 +8,12 @@ class TaskSchema(BaseModel):
     is_done: bool
 
 
+class TaskPutSchema(BaseModel):
+    title: str = Field(..., min_length=5, max_length=100)
+    description: str | None = Field(None, max_length=500)
+    is_done: bool = Field(False)
+
+
 class TaskPostSchema(BaseModel):
     title: str = Field(..., min_length=5, max_length=100)
     description: str | None = Field(None, max_length=500)
-
-class TaskDeleteSchema(BaseModel):
-    id: int
