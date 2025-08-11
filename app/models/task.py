@@ -1,5 +1,5 @@
 from typing import Annotated
-from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.orm import Mapped, mapped_column
 from app.core.db import Base
 import datetime
 from sqlalchemy import text
