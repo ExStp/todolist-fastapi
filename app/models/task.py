@@ -11,10 +11,10 @@ updated_at = Annotated[datetime.datetime, mapped_column(
         onupdate=datetime.datetime.utcnow,
     )]
 
-class Task(Base):
-    __tablename__ = "task"
+class TaskModel(Base):
+    __tablename__ = "tasks"
     
-    id: Mapped[intpk]
+    id: Mapped[int] = mapped_column(primary_key=True)
     title: Mapped[str]
     description: Mapped[str | None]
-    is_done: Mapped[bool]
+    is_done: Mapped[bool] = mapped_column(default=False, nullable=False)

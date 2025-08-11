@@ -1,17 +1,40 @@
+from fastapi import HTTPException
 from sqlalchemy import select
-from app.models.task import Task
+from sqlalchemy.exc import SQLAlchemyError
+from app.models.task import TaskModel
 from app.core.db import async_session_factory
+from app.schemas.task import TaskDeleteSchema, TaskPostSchema
+
 
 class TaskOrm:
-    
-    async def get_tasks() -> list[Task]:
+
+    @staticmethod
+    async def get_tasks() -> list[TaskModel]:
         async with async_session_factory() as session:
-            result = await session.execute(select(Task))
-            tasks = result.scalars().all()
-            return tasks
-            
-    async def post_task(task: Task) -> Task:
+            try:
+                result = await session.execute(select(TaskModel))
+                return result.scalars().all()
+            except SQLAlchemyError as _:
+                raise HTTPException(status_code=400, detail="Ошибка сохранения записи")
+
+    @staticmethod
+    async def post_task(task_in: TaskPostSchema) -> TaskModel:
         async with async_session_factory() as session:
+            task = TaskModel(**task_in.model_dump())
             session.add(task)
             await session.commit()
-            return Task
+            await session.refresh(task)
+            return task
+
+    @staticmethod
+    async def delete_task(task_id: int) -> TaskModel:
+        async with async_session_factory() as session:
+            result = await session.execute(select(TaskModel).where(TaskModel.id == task_id))
+            task_to_delete = result.scalars().one_or_none()
+            
+            if not task_to_delete:
+                return None
+            
+            await session.delete(task_to_delete)
+            await session.commit()
+            return task_to_delete
