@@ -1,4 +1,5 @@
-from fastapi import APIRouter, HTTPException
+from typing import Optional
+from fastapi import APIRouter, HTTPException, Query
 from app.crud.task import TaskOrm
 from app.schemas.task import TaskPatchSchema, TaskPostSchema, TaskPutSchema, TaskSchema
 
@@ -9,6 +10,16 @@ router = APIRouter(prefix="/tasks", tags=["tasks"])
 @router.get("/", name="Получить все задачи")
 async def get_tasks() -> list[TaskSchema]:
     return await TaskOrm.get_tasks()
+
+
+@router.get("/search", name="Поиск задач")
+async def get_tasks_by_query(
+    is_done: Optional[bool] = Query(None), title: Optional[str] = Query(None, max_length=50)
+):
+    tasks = await TaskOrm.get_tasks_by_query(is_done=is_done, title=title)
+    if not tasks:
+        raise HTTPException(status_code=404, detail="Задача не найдена")
+    return tasks
 
 
 @router.get("/{id}", name="Получить задачу по id")

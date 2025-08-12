@@ -15,7 +15,7 @@ class TaskPutSchema(BaseModel):
 
 
 class TaskPatchSchema(BaseModel):
-    title: str | None = Field(min_length=5, max_length=100)
+    title: str | None = Field(None, min_length=5, max_length=100)
     description: str | None = Field(None, max_length=500)
     is_done: bool | None = Field(False)
 

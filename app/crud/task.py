@@ -1,3 +1,4 @@
+from typing import Optional
 from fastapi import HTTPException
 from sqlalchemy import select
 from sqlalchemy.exc import SQLAlchemyError
@@ -21,6 +22,21 @@ class TaskOrm:
                 select(TaskModel).where(TaskModel.id == task_id)
             )
             return result.scalars().one_or_none()
+
+    @staticmethod
+    async def get_tasks_by_query(
+        is_done: Optional[bool] = None, title: Optional[str] = None
+    ) -> list[TaskModel]:
+        async with async_session_factory() as session:
+            query = select(TaskModel)
+
+            if is_done is not None:
+                query = query.where(TaskModel.is_done == is_done)
+            if title:
+                query = query.where(TaskModel.title.ilike(f"%{title}%"))
+
+            result = await session.execute(query)
+            return result.scalars().all()
 
     @staticmethod
     async def post_task(task_in: TaskPostSchema) -> TaskModel:
@@ -62,7 +78,6 @@ class TaskOrm:
             await session.refresh(task)
             return task
 
-
     @staticmethod
     async def patch_task(task_id: int, task_in: TaskPatchSchema) -> TaskModel | None:
         async with async_session_factory() as session:
@@ -71,7 +86,9 @@ class TaskOrm:
             if not task:
                 return None
 
-            data = task_in.model_dump(exclude_unset=True)  # Берём только переданные поля
+            data = task_in.model_dump(
+                exclude_unset=True
+            )  # Берём только переданные поля
 
             for key, value in data.items():
                 setattr(task, key, value)  # Обновляем поля объекта
