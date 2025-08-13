@@ -21,5 +21,5 @@ class TaskPatchSchema(BaseModel):
 
 
 class TaskPostSchema(BaseModel):
-    title: str = Field(..., min_length=5, max_length=100)
+    title: str = Field(..., min_length=5, max_length=50)
     description: str | None = Field(None, max_length=500)

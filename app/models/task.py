@@ -18,3 +18,5 @@ class TaskModel(Base):
     title: Mapped[str]
     description: Mapped[str | None]
     is_done: Mapped[bool] = mapped_column(default=False, nullable=False)
+    created_at: Mapped[created_at]
+    updated_at: Mapped[updated_at]

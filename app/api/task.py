@@ -14,12 +14,10 @@ async def get_tasks() -> list[TaskSchema]:
 
 @router.get("/search", name="Поиск задач")
 async def get_tasks_by_query(
-    is_done: Optional[bool] = Query(None), title: Optional[str] = Query(None, max_length=50)
+    is_done: Optional[bool] = Query(None),
+    title: Optional[str] = Query(None, max_length=50),
 ):
-    tasks = await TaskOrm.get_tasks_by_query(is_done=is_done, title=title)
-    if not tasks:
-        raise HTTPException(status_code=404, detail="Задача не найдена")
-    return tasks
+    return await TaskOrm.get_tasks_by_query(is_done=is_done, title=title)
 
 
 @router.get("/{id}", name="Получить задачу по id")
