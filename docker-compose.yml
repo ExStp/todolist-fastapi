@@ -1,18 +1,33 @@
-version: '3.8'
-
 services:
   db:
-    image: bitnami/postgresql:latest
+    image: postgres
     container_name: postgres
-    restart: always
+    restart: unless-stopped
     environment:
-      POSTGRES_DB: todo # Optional: specify a default database
-      POSTGRES_USER: admin # Optional: specify a default user
-      POSTGRES_PASSWORD: admin # Required: set a password
+      POSTGRES_DB: todo
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
     volumes:
-      - pgdata:/var/lib/postgresql/data # Persistent storage for database data
+      - pgdata:/var/lib/postgresql/data
     ports:
-      - "5432:5432" # Optional: map the database port to your host
+      - "5432:5432"
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: todo-backend
+    restart: unless-stopped
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USER: admin
+      DB_PASS: admin
+      DB_NAME: todo
+    depends_on:
+      - db
+    ports:
+      - "8000:8000"
 
 volumes:
-  pgdata: # Define the named volume for data persistence
+  pgdata:

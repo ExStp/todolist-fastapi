@@ -4,7 +4,7 @@ from app.api.task import post_task
 from app.schemas.task import TaskPostSchema
 
 
-async def main():
+async def init_create_tables():
     tasks = [
         TaskPostSchema(
             title="Подготовить документацию",
@@ -86,6 +86,3 @@ async def main():
     await BaseORM.create_tables()
     for task in tasks:
         await post_task(task)
-
-
-asyncio.run(main())
