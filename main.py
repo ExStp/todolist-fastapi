@@ -3,7 +3,7 @@ from app.api.task import router as task_router
 from fastapi.middleware.cors import CORSMiddleware
 from app.core.init_db import init_create_tables
 
-app = FastAPI(title="api")
+app = FastAPI(title="api", root_path="/api")
 
 app.add_middleware(
     CORSMiddleware,
