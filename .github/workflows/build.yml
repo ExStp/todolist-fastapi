@@ -16,5 +16,4 @@ jobs:
       - name: Build and deploy
         run: |
             cd /home/andrey/projects/todo
-            sudo docker compose build --progress=plain
             sudo docker compose up -d --build || exit 1
