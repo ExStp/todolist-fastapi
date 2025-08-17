@@ -1,4 +1,4 @@
-name: Backend Deploy
+name: Deploy Backend
 
 on:
   push:
@@ -12,14 +12,8 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # Собираем образы без кэша
-      - name: Build Docker images
+      # Собираем и запускаем контейнеры
+      - name: Build and deploy
         run: |
-          cd /home/andrey/projects/todo
-          sudo docker compose build --no-cache
-
-      # Запускаем контейнеры и следим за логами
-      - name: Run Docker Compose
-        run: |
-          cd /home/andrey/projects/todo
-          sudo docker compose up --abort-on-container-exit
+            cd /home/andrey/projects/todo
+            sudo docker compose up -d --build || exit 1
